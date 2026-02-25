@@ -29,7 +29,7 @@ This installs one custom node (`Generate Seam Mask`) and provides an example wor
 
 ### Generate Seam Mask Node
 
-A small helper node that creates a binary mask image with white bands at tile seam positions. It replicates `SplitImageToTileList`'s tiling logic to place bands at the exact center of each overlap region.
+A helper node that creates a mask image with bands at tile seam positions. It replicates `SplitImageToTileList`'s tiling logic to place bands at the exact center of each overlap region. Supports binary (hard) and gradient (linear falloff) modes.
 
 **Inputs:**
 | Parameter | Default | Description |
@@ -40,14 +40,15 @@ A small helper node that creates a binary mask image with white bands at tile se
 | tile_height | 1024 | Tile height matching Pass 1 |
 | overlap | 128 | Overlap matching Pass 1 |
 | seam_width | 64 | Width of seam bands in pixels |
+| mode | binary | `binary`: hard 0/1 mask. `gradient`: linear falloff for use with Differential Diffusion. |
 
-**Output:** `IMAGE` — a mask with white bands at seam positions, black elsewhere.
+**Output:** `IMAGE` — a mask with bands at seam positions, black elsewhere.
 
 ## How It Works
 
 The workflow chains standard ComfyUI nodes together. `SplitImageToTileList` outputs a list, and ComfyUI's auto-iteration runs all downstream nodes (VAEEncode, KSampler, VAEDecode) once per tile automatically. Scalar inputs (model, conditioning, VAE) are reused across tiles. `ImageMergeTileList` reassembles tiles using sine-weighted blending for smooth overlap transitions.
 
-The seam fix pass uses `SetLatentNoiseMask` to restrict denoising to only the masked seam regions, leaving the rest of the image untouched.
+The seam fix pass uses `SetLatentNoiseMask` to restrict denoising to only the masked seam regions, leaving the rest of the image untouched. The example workflow uses gradient mode with a `DifferentialDiffusion` node so that seam centers receive full denoising while edges blend smoothly into the surrounding image.
 
 ## License
 
