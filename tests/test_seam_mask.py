@@ -95,6 +95,71 @@ def test_values_are_binary():
     assert len(unique) <= 2, f"Mask should only contain 0.0 and 1.0, got {unique}"
 
 
+def test_binary_mode_explicit():
+    """Existing behavior works when mode='binary' is passed explicitly."""
+    node = GenerateSeamMask()
+    result = node.generate(image_width=2048, image_height=2048,
+                           tile_width=1024, tile_height=1024,
+                           overlap=128, seam_width=64, mode="binary")
+    mask = result[0]
+    unique = mask.unique()
+    assert len(unique) <= 2, f"Binary mode should only have 0.0 and 1.0, got {unique}"
+    assert mask[0, 0, 960, 0].item() == 1.0, "Center should be white"
+
+
+def test_gradient_center_is_one():
+    """In gradient mode, the seam center should be 1.0."""
+    node = GenerateSeamMask()
+    result = node.generate(image_width=2048, image_height=1024,
+                           tile_width=1024, tile_height=1024,
+                           overlap=128, seam_width=64, mode="gradient")
+    mask = result[0]
+    assert mask[0, 0, 960, 0].item() == 1.0, "Gradient center should be 1.0"
+
+
+def test_gradient_edge_is_zero():
+    """In gradient mode, the band edge should be 0.0."""
+    node = GenerateSeamMask()
+    result = node.generate(image_width=2048, image_height=1024,
+                           tile_width=1024, tile_height=1024,
+                           overlap=128, seam_width=64, mode="gradient")
+    mask = result[0]
+    assert mask[0, 0, 928, 0].item() == 0.0, "Band edge should be 0.0"
+    assert mask[0, 0, 927, 0].item() == 0.0, "Outside band should be 0.0"
+
+
+def test_gradient_midpoint():
+    """Halfway between center and edge should be ~0.5."""
+    node = GenerateSeamMask()
+    result = node.generate(image_width=2048, image_height=1024,
+                           tile_width=1024, tile_height=1024,
+                           overlap=128, seam_width=64, mode="gradient")
+    mask = result[0]
+    val = mask[0, 0, 944, 0].item()
+    assert abs(val - 0.5) < 0.01, f"Midpoint should be ~0.5, got {val}"
+
+
+def test_gradient_intersection_uses_max():
+    """Where H and V seam bands cross, the value should be the max of both."""
+    node = GenerateSeamMask()
+    result = node.generate(image_width=2048, image_height=2048,
+                           tile_width=1024, tile_height=1024,
+                           overlap=128, seam_width=64, mode="gradient")
+    mask = result[0]
+    assert mask[0, 960, 960, 0].item() == 1.0, "Intersection of two centers should be 1.0"
+    assert mask[0, 944, 960, 0].item() == 1.0, "On vertical center line, should be 1.0"
+
+
+def test_gradient_no_seams_single_tile():
+    """Gradient mode with single tile should also produce all zeros."""
+    node = GenerateSeamMask()
+    result = node.generate(image_width=512, image_height=512,
+                           tile_width=1024, tile_height=1024,
+                           overlap=128, seam_width=64, mode="gradient")
+    mask = result[0]
+    assert mask.sum().item() == 0.0, "Single tile should have no seams in gradient mode"
+
+
 if __name__ == "__main__":
     test_output_shape()
     test_seam_positions()
@@ -103,4 +168,10 @@ if __name__ == "__main__":
     test_no_spurious_bands()
     test_edge_tile_seam_position()
     test_values_are_binary()
+    test_binary_mode_explicit()
+    test_gradient_center_is_one()
+    test_gradient_edge_is_zero()
+    test_gradient_midpoint()
+    test_gradient_intersection_uses_max()
+    test_gradient_no_seams_single_tile()
     print("All tests passed!")
