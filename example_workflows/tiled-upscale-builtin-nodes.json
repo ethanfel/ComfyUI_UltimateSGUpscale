@@ -235,7 +235,7 @@
     {
       "id": 13,
       "type": "GenerateSeamMask",
-      "pos": [2040, 500],
+      "pos": [2370, 650],
       "size": [250, 170],
       "flags": {},
       "order": 12,
@@ -453,7 +453,7 @@
     {
       "id": 1,
       "title": "Load Models",
-      "bounding": [40, 130, 345, 400],
+      "bounding": [40, 130, 345, 190],
       "color": "#3f789e",
       "font_size": 24,
       "flags": {}
@@ -477,7 +477,7 @@
     {
       "id": 4,
       "title": "Pass 1: Tiled Redraw",
-      "bounding": [1150, 130, 970, 730],
+      "bounding": [1150, 130, 1200, 730],
       "color": "#3a7e3a",
       "font_size": 24,
       "flags": {}
@@ -485,7 +485,7 @@
     {
       "id": 5,
       "title": "Pass 2: Seam Fix (bypass/mute to skip)",
-      "bounding": [2030, 130, 1800, 600],
+      "bounding": [2360, 130, 1470, 710],
       "color": "#7e3a3a",
       "font_size": 24,
       "flags": {}
