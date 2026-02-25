@@ -89,7 +89,7 @@ def test_values_are_binary():
     node = GenerateSeamMask()
     result = node.generate(image_width=2048, image_height=2048,
                            tile_width=1024, tile_height=1024,
-                           overlap=128, seam_width=64)
+                           overlap=128, seam_width=64, mode="binary")
     mask = result[0]
     unique = mask.unique()
     assert len(unique) <= 2, f"Mask should only contain 0.0 and 1.0, got {unique}"
