@@ -1,6 +1,6 @@
 {
-  "last_node_id": 22,
-  "last_link_id": 36,
+  "last_node_id": 23,
+  "last_link_id": 37,
   "nodes": [
     {
       "id": 1,
@@ -212,10 +212,25 @@
         {"name": "final_height", "type": "INT", "link": 19, "widget": {"name": "final_height"}}
       ],
       "outputs": [
-        {"name": "IMAGE", "type": "IMAGE", "slot_index": 0, "links": [25]}
+        {"name": "IMAGE", "type": "IMAGE", "slot_index": 0, "links": [25, 37]}
       ],
       "properties": {"Node name for S&R": "ImageMergeTileList"},
       "widgets_values": [2048, 2048, 128]
+    },
+    {
+      "id": 23,
+      "type": "PreviewImage",
+      "pos": [2040, 350],
+      "size": [300, 300],
+      "flags": {},
+      "order": 22,
+      "mode": 0,
+      "inputs": [
+        {"name": "images", "type": "IMAGE", "link": 37}
+      ],
+      "outputs": [],
+      "properties": {"Node name for S&R": "PreviewImage"},
+      "widgets_values": []
     },
     {
       "id": 13,
@@ -431,7 +446,8 @@
     [33, 19, 0, 20, 0, "LATENT"],
     [34, 20, 0, 21, 0, "IMAGE"],
     [35, 7, 0, 21, 1, "INT"],
-    [36, 7, 1, 21, 2, "INT"]
+    [36, 7, 1, 21, 2, "INT"],
+    [37, 12, 0, 23, 0, "IMAGE"]
   ],
   "groups": [
     {
