@@ -1,6 +1,6 @@
 {
-  "last_node_id": 23,
-  "last_link_id": 37,
+  "last_node_id": 24,
+  "last_link_id": 39,
   "nodes": [
     {
       "id": 1,
@@ -12,7 +12,7 @@
       "mode": 0,
       "inputs": [],
       "outputs": [
-        {"name": "MODEL", "type": "MODEL", "slot_index": 0, "links": [1, 2]},
+        {"name": "MODEL", "type": "MODEL", "slot_index": 0, "links": [1, 38]},
         {"name": "CLIP", "type": "CLIP", "slot_index": 1, "links": [3, 4]},
         {"name": "VAE", "type": "VAE", "slot_index": 2, "links": [5, 6, 7, 8]}
       ],
@@ -223,7 +223,7 @@
       "pos": [2040, 350],
       "size": [300, 300],
       "flags": {},
-      "order": 22,
+      "order": 23,
       "mode": 0,
       "inputs": [
         {"name": "images", "type": "IMAGE", "link": 37}
@@ -238,7 +238,7 @@
       "pos": [2370, 650],
       "size": [250, 170],
       "flags": {},
-      "order": 12,
+      "order": 13,
       "mode": 0,
       "inputs": [
         {"name": "image_width", "type": "INT", "link": 18, "widget": {"name": "image_width"}},
@@ -248,7 +248,7 @@
         {"name": "IMAGE", "type": "IMAGE", "slot_index": 0, "links": [27]}
       ],
       "properties": {"Node name for S&R": "GenerateSeamMask"},
-      "widgets_values": [2048, 2048, 1024, 1024, 128, 64]
+      "widgets_values": [2048, 2048, 1024, 1024, 128, 64, "gradient"]
     },
     {
       "id": 14,
@@ -256,7 +256,7 @@
       "pos": [2370, 200],
       "size": [250, 106],
       "flags": {},
-      "order": 13,
+      "order": 14,
       "mode": 0,
       "inputs": [
         {"name": "image", "type": "IMAGE", "link": 25}
@@ -273,7 +273,7 @@
       "pos": [2370, 500],
       "size": [250, 106],
       "flags": {},
-      "order": 14,
+      "order": 15,
       "mode": 0,
       "inputs": [
         {"name": "image", "type": "IMAGE", "link": 27}
@@ -290,7 +290,7 @@
       "pos": [2670, 500],
       "size": [200, 58],
       "flags": {},
-      "order": 15,
+      "order": 16,
       "mode": 0,
       "inputs": [
         {"name": "image", "type": "IMAGE", "link": 29}
@@ -307,7 +307,7 @@
       "pos": [2670, 200],
       "size": [170, 46],
       "flags": {},
-      "order": 16,
+      "order": 17,
       "mode": 0,
       "inputs": [
         {"name": "pixels", "type": "IMAGE", "link": 28},
@@ -325,7 +325,7 @@
       "pos": [2670, 350],
       "size": [250, 46],
       "flags": {},
-      "order": 17,
+      "order": 18,
       "mode": 0,
       "inputs": [
         {"name": "samples", "type": "LATENT", "link": 31},
@@ -343,10 +343,10 @@
       "pos": [2970, 200],
       "size": [300, 474],
       "flags": {},
-      "order": 18,
+      "order": 19,
       "mode": 0,
       "inputs": [
-        {"name": "model", "type": "MODEL", "link": 2},
+        {"name": "model", "type": "MODEL", "link": 39},
         {"name": "positive", "type": "CONDITIONING", "link": 10},
         {"name": "negative", "type": "CONDITIONING", "link": 12},
         {"name": "latent_image", "type": "LATENT", "link": 32}
@@ -363,7 +363,7 @@
       "pos": [3320, 200],
       "size": [170, 46],
       "flags": {},
-      "order": 19,
+      "order": 20,
       "mode": 0,
       "inputs": [
         {"name": "samples", "type": "LATENT", "link": 33},
@@ -381,7 +381,7 @@
       "pos": [3540, 200],
       "size": [250, 106],
       "flags": {},
-      "order": 20,
+      "order": 21,
       "mode": 0,
       "inputs": [
         {"name": "image_list", "type": "IMAGE", "link": 34},
@@ -400,7 +400,7 @@
       "pos": [3840, 200],
       "size": [400, 400],
       "flags": {},
-      "order": 21,
+      "order": 22,
       "mode": 0,
       "inputs": [
         {"name": "images", "type": "IMAGE", "link": 26}
@@ -408,11 +408,29 @@
       "outputs": [],
       "properties": {"Node name for S&R": "SaveImage"},
       "widgets_values": ["UltimateSG/upscale"]
+    },
+    {
+      "id": 24,
+      "type": "DifferentialDiffusion",
+      "pos": [2560, 160],
+      "size": [250, 46],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {"name": "model", "type": "MODEL", "link": 38}
+      ],
+      "outputs": [
+        {"name": "MODEL", "type": "MODEL", "slot_index": 0, "links": [39]}
+      ],
+      "properties": {"Node name for S&R": "DifferentialDiffusion"},
+      "widgets_values": []
     }
   ],
   "links": [
     [1, 1, 0, 10, 0, "MODEL"],
-    [2, 1, 0, 19, 0, "MODEL"],
+    [38, 1, 0, 24, 0, "MODEL"],
+    [39, 24, 0, 19, 0, "MODEL"],
     [3, 1, 1, 2, 0, "CLIP"],
     [4, 1, 1, 3, 0, "CLIP"],
     [5, 1, 2, 9, 1, "VAE"],
