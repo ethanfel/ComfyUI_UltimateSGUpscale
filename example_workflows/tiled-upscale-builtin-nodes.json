@@ -412,7 +412,7 @@
     {
       "id": 24,
       "type": "DifferentialDiffusion",
-      "pos": [2560, 160],
+      "pos": [2560, 60],
       "size": [250, 46],
       "flags": {},
       "order": 12,

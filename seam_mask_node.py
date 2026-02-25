@@ -60,9 +60,9 @@ class GenerateSeamMask:
                 center = (ovl_start + ovl_end) // 2
                 x_start = max(0, center - half_w)
                 x_end = min(image_width, center + half_w)
-                for x in range(x_start, x_end):
-                    val = 1.0 - abs(x - center) / half_w
-                    mask[:, :, x, :] = torch.max(mask[:, :, x, :], torch.tensor(val))
+                xs = torch.arange(x_start, x_end, dtype=torch.float32)
+                vals = (1.0 - (xs - center).abs() / half_w).view(1, 1, -1, 1)
+                mask[:, :, x_start:x_end, :] = torch.max(mask[:, :, x_start:x_end, :], vals)
 
             # Horizontal seam bands
             for i in range(len(y_tiles) - 1):
@@ -71,9 +71,9 @@ class GenerateSeamMask:
                 center = (ovl_start + ovl_end) // 2
                 y_start = max(0, center - half_w)
                 y_end = min(image_height, center + half_w)
-                for y in range(y_start, y_end):
-                    val = 1.0 - abs(y - center) / half_w
-                    mask[:, y, :, :] = torch.max(mask[:, y, :, :], torch.tensor(val))
+                ys = torch.arange(y_start, y_end, dtype=torch.float32)
+                vals = (1.0 - (ys - center).abs() / half_w).view(1, -1, 1, 1)
+                mask[:, y_start:y_end, :, :] = torch.max(mask[:, y_start:y_end, :, :], vals)
         else:
             # Binary mode (original behavior)
             for i in range(len(x_tiles) - 1):
